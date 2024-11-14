@@ -1,5 +1,16 @@
 let container = document.querySelector(".main");
+let filterBtn = document.querySelector(".filter")
+let resetBtn = document.querySelector(".reset")
+let selectBox = document.querySelector("#select")
+let input = document.querySelector(".input")
+let loading = document.querySelector(".loading");
+let main = document.querySelector(".main")
 
+main.style.visibility = "hidden";
+setTimeout(() =>{
+  loading.style.display = "none";
+  main.style.visibility = " visible"
+},9000)
 
 async function poke(params) {
     let promise = await fetch (params);
@@ -9,13 +20,19 @@ async function poke(params) {
 
 
 
+
+
+
 async function fetchPokemon(){
-    for ( let i = 1 ; i <= 200; i++){
+    for ( let i = 1 ; i <= 150; i++){
         let pokemon = await poke(`https://pokeapi.co/api/v2/pokemon/${i}`);
-       console.log(pokemon)
+    //    console.log(pokemon)
 
        createCard(pokemon);
+      
     }
+
+   
 }
 
 fetchPokemon();
@@ -111,4 +128,35 @@ function abilities(arr){
 return str;
 }
 
-console.log(new Date('3-5-2024'))
+filterBtn.addEventListener("click",()=>{
+
+    let allcards = document.querySelectorAll(".card");
+    allcards.forEach((element, index) =>{
+        let type = element.querySelector(".type");
+       if (selectBox.value.toLowerCase() == type.innerText.toLowerCase()){
+        element.style.display = "block"
+       }else{
+        element.style.display = "none"
+       }
+
+    })
+ })
+
+ resetBtn.addEventListener("click" , () =>{
+    window.location.reload();
+ })
+ input.addEventListener("keyup",()=>{
+
+    let allcards = document.querySelectorAll(".card");
+    allcards.forEach((element, index) =>{
+        let name = element.querySelector(".name").innerText;
+     
+        if (name.startsWith(input.value.toLowerCase())){
+            element.style.display = "block"
+            
+        }else{
+            element.style.display = "none";
+        }
+
+    })
+ })
